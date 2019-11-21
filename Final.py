@@ -125,18 +125,20 @@ if __name__ == '__main__':
         d_ = []
         m_ = []
         i = 0
-        while (cohete.gasolina_masa > 0):
-            rate(500)
-            dm = mdot*dt
-            cohete.velocidad += dm/(cohete.masa+cohete.gasolina_masa)*(-vec_velo)
-            cohete.pos += cohete.velocidad*dt
-            cohete.gasolina_masa -=dm
-            cohete.opacity = cohete.gasolina_masa/masa_inicial_gas
-            t += dt
-            r_pos.plot(pos=(t,cohete.pos.y))
+        while (cohete.gasolina_masa > 0): #mientras haya gasolina continua la simulacion
+            rate(500) #ajustamos los fps de la simulacion
+            dm = mdot*dt #diferencial del ratio de masa
+            cohete.velocidad += dm/(cohete.masa+cohete.gasolina_masa)*(-vec_velo) #calcular velocidad y asignar al cohet
+            cohete.pos += cohete.velocidad*dt #suma velocidad a la distancia
+            cohete.gasolina_masa -=dm #quitamos masa a medida que pasa el tiempo (diferecial de masa)
+            cohete.opacity = cohete.gasolina_masa/masa_inicial_gas #opacidad del cohete
+            t += dt #aumentamos el tiempo
+            #Graficas
+            r_pos.plot(pos=(t,cohete.pos.y)) 
             r_mas.plot(pos=(t,cohete.gasolina_masa))
             r_vel.plot(pos=(t,cohete.velocidad.y))
-            scene.center = cohete.pos
+            scene.center = cohete.pos #Centrar camara en el cohete
+            #Añadir datos para luego guardarlos
             t_.append(t)
             v_.append(cohete.velocidad.y)
             d_.append(cohete.pos.y)
@@ -150,12 +152,14 @@ if __name__ == '__main__':
         df = pd.DataFrame(data)
         # convertir datos a archivo excel
         df.to_csv("./data.csv")
+        
         #leemos el archivo csv
         cohete = pd.read_csv("data.csv",sep=',',decimal='.')
         tiempo = cohete["Tiempo"]
         distancia = cohete["Distancia"]
         velocidad = cohete["Velocidad"]
         masa = cohete["Masa"]
+
         #Procedemos a graficar
         plt.figure(figsize=(10,8))
         plt.subplot(3,1,1)
@@ -180,6 +184,3 @@ if __name__ == '__main__':
         ax.spines['top'].set_color('none')
         ax.spines['right'].set_color('none')        
         plt.show()
-        
-
-            
