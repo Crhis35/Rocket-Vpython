@@ -1,7 +1,7 @@
 aiohttp==3.6.2
 async-timeout==3.0.1
 attrs==19.3.0
-autobahn==20.6.1
+autobahn==20.12.3
 backcall==0.2.0
 bleach==3.1.5
 Brotli==1.0.7
